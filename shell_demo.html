@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Shell Demo Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Hide default scrollbar but allow scrolling */
+        .terminal-output::-webkit-scrollbar {
+            display: none;
+        }
+        .terminal-output {
+            /* REMOVED: -ms-overflow-style: none; and scrollbar-width: none; */
+            /* We will manage overflow via height setting */
+        }
+        /* Custom cursor blink animation */
+        @keyframes blink {
+            0%, 100% { background-color: #f59e0b; } /* Orange cursor (matches portfolio accent) */
+            50% { background-color: transparent; }
+        }
+        .cursor {
+            width: 8px;
+            height: 1.2em;
+            display: inline-block;
+            vertical-align: middle;
+            animation: blink 1s step-start infinite;
+            margin-left: 2px;
+        }
+        /* Style the base body to be fully transparent/seamless */
+        body {
+            background-color: transparent; /* Makes the iframe blend with the background card */
+            padding: 0;
+            margin: 0;
+            /* Text color is dark but won't show unless error, used as a fallback */
+            color: #f1f5f9; 
+        }
+        
+        /* Ensure the terminal colors are DARK MODE compliant */
+        .terminal-bg {
+            background-color: #1e293b; /* Slate-800 for contrast within the gray-800 card */
+        }
+        .terminal-text {
+            color: #f1f5f9; /* Light text */
+        }
+    </style>
+</head>
+<!-- Removed all body padding to ensure seamless embedding -->
+<body class="flex items-center justify-center min-h-screen">
+
+    <!-- Terminal container will inherit size from iframe. No outer border/shadow needed. -->
+    <div id="terminal" class="w-full max-w-2xl rounded-lg overflow-hidden">
+        
+        <!-- Header Bar (macOS Traffic Lights - Dark/Gray Background) -->
+        <div class="bg-gray-900 px-3 py-2 flex items-center text-sm border-b border-gray-700">
+            <div class="flex space-x-2">
+                <!-- Red (Close) -->
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div> 
+                <!-- Yellow (Minimize) -->
+                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div> 
+                <!-- Green (Maximize) -->
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div> 
+            </div>
+            <span class="flex-grow text-center text-gray-400 text-xs font-mono">sh - 80x24</span>
+        </div>
+
+        <!-- Output Area (Black/Dark Gray Body) -->
+        <div id="output" class="terminal-output terminal-body-bg p-4 h-64 overflow-y-auto text-gray-300 font-mono text-sm leading-relaxed" style="background-color: #1e1e1e;">
+        </div>
+
+        <!-- Input Placeholder (Black/Dark Gray Body) -->
+        <div id="input-line" class="p-4 border-t border-gray-700 terminal-body-bg text-gray-300 font-mono text-sm" style="background-color: #1e1e1e;">
+            <!-- Simple Mac-style prompt: [user@hostname current-dir] % -->
+            <!-- Colors are high-contrast dark mode -->
+            <span id="prompt" class="text-green-400">~ %</span> 
+            <span id="typed-text" class="ml-2"></span>
+            <!-- Cursor is now orange/amber to match portfolio accent -->
+            <span id="cursor" class="cursor" style="background-color: #f59e0b;"></span>
+        </div>
+
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const typedTextSpan = document.getElementById('typed-text');
+        const cursor = document.getElementById('cursor');
+        
+        // Commands customized to showcase your C++ shell's core logic:
+        const commands = [
+            // 1. Built-in: Check command type (shows type logic)
+            ['type cd', 
+             'cd is a shell builtin', 
+             1000],
+            
+            // 2. Built-in: Change Directory (shows state change simulation)
+            ['cd /usr/local', 
+             'shell: changing current directory to /usr/local', 
+             1200],
+            
+            // 3. External Command + Redirection (shows I/O logic)
+            ['echo "Test line for redirection" > output.txt', 
+             'Successfully redirected output to output.txt.', 
+             1800],
+            
+            // 4. Complex Piping (shows IPC logic)
+            ['ls -l | grep output', 
+             'Executing pipeline...\noutput.txt', 
+             2500],
+
+            // 5. Cleanup
+            ['rm output.txt',
+             'Successfully removed output.txt.', 
+             2000]
+        ];
+
+        let commandIndex = 0;
+        let charIndex = 0;
+        let isTyping = true;
+        let currentCommand = '';
+        let currentOutput = '';
+        let currentPath = '~';
+        let currentPrompt = 'user@host:~ $'; // Initial prompt structure
+
+
+        function typeWriter() {
+            if (commandIndex >= commands.length) {
+                cursor.style.display = 'none';
+                setTimeout(resetDemo, 3000); 
+                return;
+            }
+
+            if (isTyping) {
+                if (charIndex < currentCommand.length) {
+                    typedTextSpan.textContent += currentCommand.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 50); // Typing speed
+                } else {
+                    isTyping = false;
+                    charIndex = 0;
+                    setTimeout(executeCommand, 1000); // Wait after typing before "Enter"
+                }
+            }
+        }
+
+        function updatePromptDisplay(newPath) {
+             const pathDisplay = newPath === '/usr/local' ? '/usr/local' : '~';
+             currentPath = newPath;
+             
+             // FIX: Added non-breaking space (&nbsp;) after the directory path in the prompt structure
+             // This ensures separation regardless of font rendering differences.
+             const newPrompt = `<span class="text-green-400">~ </span><span class="text-blue-400">${pathDisplay}</span><span class="text-gray-300"> %</span>&nbsp;`;
+             document.getElementById('input-line').innerHTML = `${newPrompt} <span id="typed-text"></span> <span id="cursor" class="cursor" style="background-color: #f59e0b;"></span>`;
+             
+             // Update the currentPrompt for output history rendering, ensuring the space is included here too
+             currentPrompt = `~ ${pathDisplay} % `; 
+        }
+
+
+        function executeCommand() {
+            // Append the final command to the output area (light text for visibility)
+            // Use the currentPrompt (which now includes the trailing space)
+            output.innerHTML += `<span class="text-gray-300">${currentPrompt}</span> ${typedTextSpan.textContent}<br>`;
+            typedTextSpan.textContent = '';
+            
+            // Handle directory change simulation for visual continuity
+            if (currentCommand.startsWith('cd ')) {
+                const path = currentCommand.substring(3).trim();
+                // Logic to set the current path state
+                if (path === '/usr/local') {
+                    updatePromptDisplay('/usr/local');
+                } else {
+                    updatePromptDisplay('~'); 
+                }
+                
+            }
+            
+            // Append the simulated output (light text for contrast)
+            output.innerHTML += `<span class="text-gray-300">${currentOutput.replace(/\n/g, '<br>')}</span><br><br>`;
+            
+            // Scroll to the bottom (this will now only scroll if content is too large)
+            output.scrollTop = output.scrollHeight;
+
+            // Prepare for the next command
+            commandIndex++;
+            
+            // --- FIX: Check if we are done before setting the next timeout ---
+            if (commandIndex >= commands.length) {
+                setTimeout(resetDemo, commands[commandIndex - 1][2] + 500); // Add a small buffer after final command delay
+            } else {
+                setTimeout(startNextCommand, commands[commandIndex - 1][2]); // Use the defined delay
+            }
+        }
+
+        function startNextCommand() {
+            if (commandIndex < commands.length) {
+                currentCommand = commands[commandIndex][0];
+                currentOutput = commands[commandIndex][1];
+                isTyping = true;
+                typeWriter();
+            }
+        }
+
+        function resetDemo() {
+            commandIndex = 0;
+            charIndex = 0;
+            isTyping = true;
+            cursor.style.display = 'inline-block';
+            
+            // Clear output without printing 'Reloading Shell Demo...'
+            output.innerHTML = '';
+            updatePromptDisplay('~'); // Reset path to home (~)
+            
+            // Start the sequence again
+            setTimeout(startNextCommand, 500); 
+        }
+
+        // Initialize the first command
+        function initializeDemo() {
+            updatePromptDisplay('~');
+            output.innerHTML = ''; 
+
+            if (commands.length > 0) {
+                currentCommand = commands[0][0];
+                currentOutput = commands[0][1];
+                typeWriter();
+            }
+        }
+
+        window.onload = initializeDemo;
+    </script>
+</body>
+</html>
