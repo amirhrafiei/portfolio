@@ -1,0 +1,11 @@
+:root {
+    --color-primary:#f1f5f9;
+    --color-accent: #f59e0b;
+    --color-background: #0f172a;
+    --color-light:#f1f5f9;
+    --color-tag-bg: #e0f2fe;
+
+    --font-main: 'Roboto', sans-serif;
+    --font-size-base: 1em;
+    --header-spacing: 15px;
+}
