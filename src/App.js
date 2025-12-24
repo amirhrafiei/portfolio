@@ -38,11 +38,20 @@ const projectsData = [
         linkDetail: "/figma-details",
         linkCode: "https://www.figma.com/proto/Vga65q45xVLuRAdGxUZ3HV/GPT-Case-Study--Sectioned-Conversations?node-id=1-2&p=f&t=id1x9bw2ZsCzmZDZ-8&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&hide-ui=1",
         category: "Design"
+    },
+    {
+        id: 5,
+        title: "PianoGPT",
+        description: "A deep dive into the Transformer architecture, exploring the mathematical foundations of causal self-attention to generate symbolic music from scratch.",
+        tags: ["PyTorch", "Transformers", "MIDI", "Generative AI"],
+        linkDetail: "/pianogpt-details",
+        linkCode: "https://github.com/amirhrafiei/pianogpt",
+        category: "Machine Learning"
     }
 ];
 
 // --- NEW LOGIC: Defines the desired display order ---
-const projectOrder = ["Poly Chat", "FlashShell: A UNIX Command Interpreter", "NumPy Neural Network: Backpropagation from Scratch",
+const projectOrder = ["Poly Chat",  "PianoGPT", "FlashShell: A UNIX Command Interpreter", "NumPy Neural Network: Backpropagation from Scratch",
     "Case Study: Sectioned AI Conversations"
 ];
 
@@ -101,6 +110,25 @@ const SneakerDemoIcon = () => (
 
 /* FIX: Unified Tech Icon Function with improved logos */
 const getTechIcon = (tag, sizeClass = "w-3 h-3 mr-2") => {
+     if (tag === "PyTorch") return (
+        <svg className={sizeClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+    );
+    if (tag === "MIDI") return (
+        <svg className={sizeClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8v1M9 11v1M15 11v1M10 15v1M14 15v1" strokeWidth="3" />
+        </svg>
+    );
+    if (tag === "Transformers") return (
+        <svg className={sizeClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M7 8h10M7 12h10M7 16h10" />
+        </svg>
+    );
+    if (tag === "Generative AI") return <svg className={sizeClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>;
+    
     if (tag === "UX Research") return <svg className={sizeClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>;
     if (tag === "Figma") return <FigmaLogoIcon className={sizeClass} />;
     // UPDATED: Product Design icon (Drafting/Pencil focus)
@@ -199,6 +227,11 @@ const ProjectCard = ({ project }) => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
     );
+     const PianoIcon = (
+        <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-4 right-4 w-8 h-8 lg:w-10 lg:h-10 text-amber-500/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+        </svg>
+    );
 
     const FashionIcon = (
         <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-4 right-4 w-8 h-8 lg:w-12 lg:h-12 text-fuchsia-500" viewBox="0 0 24 24" fill="currentColor" shapeRendering="crispEdges">
@@ -235,6 +268,7 @@ const ProjectCard = ({ project }) => {
     );
     
     const getIcon = (t) => {
+        if (t.includes("PianoGPT")) return PianoIcon;
         if (t === "FlashShell: A UNIX Command Interpreter") return ShellIcon;
         if (t === "NumPy Neural Network: Backpropagation from Scratch") return FashionIcon;
         if (t === "Poly Chat") return PolyIcon;
@@ -338,7 +372,7 @@ const AboutSection = () => (
     <section id="about" className="pt-16 pb-10 border-b border-gray-700">
         <div className="space-y-4 text-gray-300 text-lg">
             <p>I'm a student who loves using tech to tackle complex problems. I excel where technical execution meets strategic vision, always aiming to build products based on solid technical concepts.</p>
-            <p>My experience includes building a functional shell (great for process management!) and completing a real-time AI translating chat application. To round things out, I constantly study Product strategy, applying a mindset of continuous improvement to everything I create.</p>
+            <p>My experience includes building a GPT from scratch and completing a real-time AI translating chat application. To round things out, I constantly study Product strategy, applying a mindset of continuous improvement to everything I create.</p>
             <p>I want to be the visionary on a product team, helping define what we should build, not just how. I'm looking for high-impact opportunities to leverage my technical depth and strategic insights. Check out my projects below!</p>
         </div>
     </section>
@@ -403,13 +437,6 @@ const LeftFixedColumn = ({ activeSection }) => (
     </div>
 );
 
-const EmptyProjectDetails = () => (
-    <div className="py-12 text-center bg-gray-800 p-8 rounded-lg border border-gray-700">
-        <h2 className="text-3xl font-bold text-amber-400 mb-4">Project Details Coming Soon!</h2>
-        <p className="text-gray-300 mb-6">This project is still awaiting its technical deep-dive write-up. Please check back, or view the <a href="https://github.com/amirhrafiei" className="text-amber-500 hover:text-amber-600 underline">source code on GitHub</a> in the meantime!</p>
-        <Link to="/" className="inline-flex items-center text-white bg-amber-500 hover:bg-amber-600 font-medium py-2 px-4 rounded-sm">← Back to All Projects</Link>
-    </div>
-);
 
 const HomePage = ({ setActiveSection }) => {
     const observerRef = useRef(null);
@@ -457,7 +484,63 @@ const HomePage = ({ setActiveSection }) => {
         </div>
     );
 };
-
+const PianoGPTDetails = () => (
+    <div className="py-12 max-w-4xl mx-auto">
+        <Link to="/" className="inline-flex items-center text-amber-400 hover:text-amber-500 font-medium mb-8 transition duration-150">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Back to All Projects
+        </Link>
+        <h2 className="text-4xl font-extrabold text-white mb-2">PianoGPT</h2>
+        <p className="text-xl text-gray-400 mb-6">A creative engineering exploration into building a decoder-only GPT from scratch.</p>
+        <div className="bg-gray-800 p-8 rounded-lg border border-gray-700 shadow-2xl mb-10">
+            <div className="flex items-center justify-between mb-8">
+                <h3 className="text-2xl font-bold text-amber-500">Validation Samples (v0.1)</h3>
+                <span className="bg-amber-900/40 text-amber-400 text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full border border-amber-700">Early Training Stage</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-700">
+                    <p className="font-bold text-white mb-4 flex items-center text-sm">
+                        <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse"></span>
+                        AI Composition #1
+                    </p>
+                    <audio controls className="w-full h-8 brightness-90 contrast-125">
+                        <source src="https://raw.githubusercontent.com/amirhrafiei/pianogpt/main/samples/ai_composition_1.mp3" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-700">
+                    <p className="font-bold text-white mb-4 flex items-center text-sm">
+                        <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse"></span>
+                        AI Composition #2
+                    </p>
+                    <audio controls className="w-full h-8 brightness-90 contrast-125">
+                        <source src="https://raw.githubusercontent.com/amirhrafiei/pianogpt/main/samples/ai_composition_2.mp3" type="audio/mpeg" />
+                    </audio>
+                </div>
+            </div>
+            <p className="mt-6 text-xs text-gray-500 italic leading-relaxed">
+                * Note: These samples represent the model's current ability to maintain harmonic structure and REMI token syntax. While the melodies are currently foundational, they validate the successful implementation of the causal attention mechanism.
+            </p>
+        </div>
+        <div className="mt-10 prose prose-invert max-w-none bg-gray-800 p-8 rounded-lg border border-gray-700 text-gray-300">
+            <h3 className="text-2xl font-bold text-amber-400">Technical Methodology</h3>
+            <p>At its core, PianoGPT is a study in high-dimensional probability and linear algebra. The model treats musical composition as a "Next Token Prediction" task, optimizing the cross-entropy loss between the predicted distribution and the actual MIDI event sequence.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div className="bg-gray-900 p-5 rounded-lg border border-gray-700">
+                    <h5 className="font-bold text-amber-400 mb-2 text-sm">4-Head Attention</h5>
+                    <p className="text-xs italic leading-relaxed">Tracks rhythm, pitch, and harmony simultaneously through parallel self-attention heads, ensuring structural coherence over long musical phrases.</p>
+                </div>
+                <div className="bg-gray-900 p-5 rounded-lg border border-gray-700">
+                    <h5 className="font-bold text-amber-400 mb-2 text-sm">MAESTRO Dataset</h5>
+                    <p className="text-xs italic leading-relaxed">Trained on 200+ hours of professional piano performances, enabling the model to learn nuanced expressive features like velocity and tempo shifts.</p>
+                </div>
+            </div>
+            <hr className="my-10 border-gray-700" />
+            <a href="https://github.com/amirhrafiei/pianogpt" target="_blank" rel="noopener noreferrer" className="inline-block bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 px-8 rounded-sm transition duration-150 shadow-md">
+                View Full Documentation on GitHub
+            </a>
+        </div>
+    </div>
+);
 const ShellDetails = () => {
     const shellProject = projectsData.find(p => p.id === 1);
     if (!shellProject) return <div className="p-10 text-center text-red-500 bg-slate-900">Project details not found.</div>;
@@ -725,8 +808,8 @@ const AppLogic = () => {
                     <Route path="/fashion-details" element={<FashionDetails />} />
                     <Route path="/polychat-details" element={<PolyChatDetails />} /> 
                     <Route path="/figma-details" element={<FigmaDetails />} />
-                    <Route path="/kvstore-details" element={<EmptyProjectDetails />} />
-                    <Route path="/visualizer-details" element={<EmptyProjectDetails />} />
+                    <Route path="/pianogpt-details" element={<PianoGPTDetails />} />
+
                 </Routes>
                 <Footer />
             </main>
