@@ -280,7 +280,10 @@ const ProjectCard = ({ project }) => {
 
     return (
         <article className="bg-gray-800 p-6 rounded-lg border border-gray-700 transition-all duration-300 hover:shadow-xl hover:border-amber-400 flex flex-col h-full shadow-lg relative">
-            <h4 className="text-xl font-bold text-amber-400 mb-2">{title}</h4>
+            <h4 className="text-xl font-bold text-amber-400 mb-2">{title === "NumPy Neural Network: Backpropagation from Scratch" 
+                    ? <>NumPy Neural Network:<br />Backpropagation from Scratch</>
+                    : title
+                }</h4>
             {getIcon(title)}
             <div className="flex flex-wrap mb-4 gap-2">
                 {tags.map((tag, index) => (
