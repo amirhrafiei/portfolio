@@ -61,7 +61,7 @@ const orderedProjectsData = projectOrder.map(title =>
 
 
 // Moved sections to top-level to prevent undefined errors
-const SECTIONS = ['about', 'projects', 'experience'];
+const SECTIONS = ['about', 'experience', 'projects'];
 
 // --- 2. ICONS & HELPERS ---
 const FigmaLogoIcon = ({ className }) => (
@@ -324,8 +324,7 @@ const Footer = () => (
 
 const HeroSection = () => (
     <div className="py-6 border-b border-gray-700 mb-6">
-        <h2 className="text-xl font-extrabold text-white mb-3">Statistics @ UC Berkeley</h2>
-        <p className="text-base text-gray-400">I'm actively learning to bridge software engineering skills with strategic product thinking to solve complex problems.</p>
+        <h2 className="text-xl font-extrabold text-white mb-3">Data Science & Computer Science @ UC Berkeley</h2>
     </div>
 );
 
@@ -355,8 +354,8 @@ const SkillsSection = ({ activeSection }) => {
         <div className="pt-4 pb-8">
             <nav className="space-y-3">
                 <a href="#about" onClick={(e) => handleNavigationAndScroll(e, 'about')} className={getLinkClass('about')}>— About Me</a>
-                <a href="#projects" onClick={(e) => handleNavigationAndScroll(e, 'projects')} className={getLinkClass('projects')}>— Featured Projects</a>
                 <a href="#experience" onClick={(e) => handleNavigationAndScroll(e, 'experience')} className={getLinkClass('experience')}>— Experience</a>
+                <a href="#projects" onClick={(e) => handleNavigationAndScroll(e, 'projects')} className={getLinkClass('projects')}>— Featured Projects</a>
             </nav>
             <div className="flex space-x-6 pt-6 border-t border-gray-700 mt-6">
                 <a href="https://github.com/amirhrafiei" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-amber-500 transition duration-150" aria-label="GitHub"><svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.742.083-.727.083-.727 1.205.084 1.839 1.237 1.839 1.237 1.07 1.833 2.807 1.304 3.492.997.107-.775.418-1.304.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.465-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.292-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.771.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.474 5.923.42.368.807 1.096.807 2.222v3.293c0 .319.192.694.802.576 4.765-1.589 8.196-6.091 8.196-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
@@ -371,9 +370,10 @@ const SkillsSection = ({ activeSection }) => {
 const AboutSection = () => (
     <section id="about" className="pt-16 pb-10 border-b border-gray-700">
         <div className="space-y-4 text-gray-300 text-lg">
-            <p>I'm a student who loves using tech to tackle complex problems. I excel where technical execution meets strategic vision, always aiming to build products based on solid technical concepts.</p>
-            <p>My experience includes building a GPT from scratch and completing a real-time AI translating chat application. To round things out, I constantly study Product strategy, applying a mindset of continuous improvement to everything I create.</p>
-            <p>I want to be the visionary on a product team, helping define what we should build, not just how. I'm looking for high-impact opportunities to leverage my technical depth and strategic insights. Check out my projects below!</p>
+            <p>I’m a Data Science major and CS minor at UC Berkeley with a builder’s soul, a data-driven mind, and a compiler that occasionally tests my patience. My journey as a transfer student turned me into a professional problem-solver, a trait I’ve brought to architecting a multimodal voice analytics pipeline with Docker and building FlashShell, a Unix-style shell in C++.</p>
+            <p>From engineering front-end systems at Codify to developing full-stack AI PWAs like Poly Chat, I’m driven to build software that is as robust as it is intelligent (and hopefully bug-free on the first try). I spend an unhealthy amount of time thinking about clean architecture and why my code worked perfectly five minutes ago but doesn't now.</p>
+            <p>When I’m not in the terminal, I’m likely at the cinema, getting inspired at SFMOMA, or attempting a new recipe in the kitchen.</p>
+            <p> Check out my projects below!</p>
         </div>
     </section>
 );
@@ -382,9 +382,26 @@ const ExperienceSection = () => (
     <section id="experience" className="pt-16 pb-10 border-b border-gray-700">
         <div className="space-y-8">
             <div className="border-l-4 border-amber-500 pl-4">
-                <h4 className="text-xl font-bold text-amber-400">Engagement Ambassador</h4>
-                <p className="text-gray-400">University of California, Berkeley | Oct 2025 - Nov 2025</p>
-                <p className="text-gray-300 mt-2">Engaged alumni and parents to raise awareness and financial support for UC Berkeley programs. Focused on direct donor outreach, collaborative goal setting, and strengthening university relationships through persuasive communication.</p>
+                <h4 className="text-xl font-bold text-amber-400">Data Discovery Project: Multimodal Voice Analytics Pipeline</h4>
+                <p className="text-gray-400">University of California, Berkeley | Spring 2026</p>
+                <p className="text-gray-300 mt-2">Engineered a full-stack voice analytics platform with containerized Python environments and real-time data visualization. Responsibilities included:</p>
+                <ul className="list-disc list-inside pl-4 mt-3 space-y-1 text-gray-300">
+                    <li><strong>Containerization & Deployment:</strong> Built a Dockerfile to containerize the Python environment, ensuring consistent performance across development and production while simplifying dependency management.</li>
+                    <li><strong>Storage Infrastructure:</strong> Integrated MinIO as a high-performance object storage solution to manage large-scale raw acoustic data with S3-compatible APIs.</li>
+                    <li><strong>AI Automation & Orchestration:</strong> Developed an automated agent using Activepieces to orchestrate workflows between the voice analytics engine and external communication tools.</li>
+                    <li><strong>User Interface:</strong> Designed and implemented a custom React/Tailwind dashboard to visualize real-time stress scores and acoustic biomarkers.</li>
+                    <li><strong>CI/CD & Version Control:</strong> Managed the full project lifecycle via GitHub, utilizing branching strategies and pull requests for code integrity.</li>
+                </ul>
+            </div>
+            <div className="border-l-4 border-amber-500 pl-4">
+                <h4 className="text-xl font-bold text-amber-400">Software Developer</h4>
+                <p className="text-gray-400">Codify | Spring 2026</p>
+                <p className="text-gray-300 mt-2">Developing front-end architecture for the UCSB LBA Weekender web application with a focus on scheduling engine and interface design. Key contributions include:</p>
+                <ul className="list-disc list-inside pl-4 mt-3 space-y-1 text-gray-300">
+                    <li><strong>Front-End Architecture:</strong> Specializing in the scheduling engine and interface implementation for complex event management workflows.</li>
+                    <li><strong>Version Control & Collaboration:</strong> Leveraging Git/GitHub within a multi-developer team, maintaining code quality through peer reviews and collaborative debugging.</li>
+                    <li><strong>Component Development:</strong> Building reusable TypeScript and Tailwind components to reduce styling overhead and ensure design consistency across the platform.</li>
+                </ul>
             </div>
             <div className="border-l-4 border-gray-700 pl-4">
                 <h4 className="text-xl font-bold text-white">Student Researcher</h4>
@@ -479,8 +496,8 @@ const HomePage = ({ setActiveSection }) => {
     return (
         <div className="pt-16">
             <AboutSection />
-            <ProjectsSection />
             <ExperienceSection />
+            <ProjectsSection />
         </div>
     );
 };

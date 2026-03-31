@@ -7,7 +7,7 @@ import '../styles/global.css';
 const HeroSection = () =>(
     <section className="hero-section">
         <div className="container">
-            <h2>Statistics student at UC Berkeley</h2>
+            <h2>Data Science & Computer Science student at UC Berkeley</h2>
             <p>Driven to use modern computing to solve real problems</p>
 
         </div>
